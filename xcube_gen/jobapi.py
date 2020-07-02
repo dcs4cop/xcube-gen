@@ -106,7 +106,7 @@ class JobApi:
         :return:
         """
 
-        res = requests.delete(f"{self._api_url}:{self._api_port}/jobs/{self._user_id}/{job_id}", headers={
+        res = requests.delete(f"{self.service}/jobs/{self._user_id}/{job_id}", headers={
             "Authorization": f"Bearer {self._token['access_token']}"
         })
 
