@@ -66,7 +66,6 @@ class JobApi:
                                   })
 
             token.raise_for_status()
-            print(token.text)
             return token.json()
         except BaseException as e:
             raise str(e)
