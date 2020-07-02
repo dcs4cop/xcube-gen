@@ -25,7 +25,6 @@ from typing import Union
 import requests
 from dotenv import load_dotenv
 
-from xcube_gen import api
 from xcube_gen.typedefs import AnyDict, Error, JsonObject
 
 
@@ -34,9 +33,9 @@ class JobApi:
         load_dotenv()
 
         self._user_name = os.getenv("XCUBE_GEN_API_USER_NAME")
-        self._api_url = os.getenv("XCUBE_GEN_API_SERVER_URL")
-        self._api_prefix = os.getenv("XCUBE_GEN_API_SERVER_PREFIX")
-        self._api_port = os.getenv("XCUBE_GEN_API_SERVER_PORT")
+        self._api_url = os.getenv("XCUBE_GEN_API_SERVER_URL") or "https://xcube-gen.brockmann-consult.de"
+        self._api_prefix = os.getenv("XCUBE_GEN_API_SERVER_PREFIX") or "/api/v1"
+        self._api_port = os.getenv("XCUBE_GEN_API_SERVER_PORT") or "443"
         self._auth_aud = os.getenv("XCUBE_GEN_AUTH_AUD")
         self._auth_client_id = os.getenv("XCUBE_GEN_AUTH_CLIENT_ID")
         self._auth_domain = os.getenv("XCUBE_GEN_AUTH_DOMAIN")
@@ -102,7 +101,6 @@ class JobApi:
     def delete(self, job_id: str) -> Union[AnyDict, Error]:
         """
 
-        :param user_id:
         :param job_id:
         :return:
         """
@@ -120,7 +118,6 @@ class JobApi:
     def list(self) -> JsonObject:
         """
 
-        :param user_id:
         :return:
         """
 
@@ -137,7 +134,6 @@ class JobApi:
     def status(self, job_id: str) -> AnyDict:
         """
 
-        :param user_id:
         :param job_id:
         :return:
         """
