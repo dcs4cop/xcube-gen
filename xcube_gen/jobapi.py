@@ -28,10 +28,10 @@ from xcube_gen.typedefs import AnyDict, JsonObject
 
 
 class JobApi:
-    def __init__(self):
+    def __init__(self, user_name: str = None):
         load_dotenv()
 
-        self._user_name = os.getenv("XCUBE_GEN_API_USER_NAME")
+        self._user_name = os.getenv("XCUBE_GEN_API_USER_NAME") or user_name
         self._api_url = os.getenv("XCUBE_GEN_API_SERVER_URL") or "https://xcube-gen.brockmann-consult.de"
         self._api_prefix = os.getenv("XCUBE_GEN_API_SERVER_PREFIX") or "/api/v1"
         self._api_port = os.getenv("XCUBE_GEN_API_SERVER_PORT") or "443"
