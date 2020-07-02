@@ -20,12 +20,11 @@
 # SOFTWARE.
 import hashlib
 import os
-from typing import Union
 
 import requests
 from dotenv import load_dotenv
 
-from xcube_gen.typedefs import AnyDict, Error, JsonObject
+from xcube_gen.typedefs import AnyDict, JsonObject
 
 
 class JobApi:
@@ -43,7 +42,10 @@ class JobApi:
 
         self._token = self._get_token_for_client()
         # self._user_name = self._get_user_info_from_auth0(self._token['access_token'])
-        self._user_id = 'a' + hashlib.md5(self._user_name.encode()).hexdigest()
+        if self._token:
+            self._user_id = 'a' + hashlib.md5(self._user_name.encode()).hexdigest()
+        else:
+            raise ValueError("Could not load user")
 
     @property
     def whoami(self):
@@ -64,6 +66,7 @@ class JobApi:
                                   })
 
             token.raise_for_status()
+            print(token.text)
             return token.json()
         except BaseException as e:
             raise str(e)
@@ -78,16 +81,14 @@ class JobApi:
 
         return req.json()
 
-    def create(self, cfg: JsonObject) -> dict:
+    def create(self, cfg: JsonObject) -> AnyDict:
         """
 
         :param cfg:
         :return:
         """
 
-        print("accessing", f"{self._api_url}:{self._api_port}{self._api_prefix}/jobs/{self._user_id}")
-
-        res = requests.put(f"{self._api_url}:{self._api_port}{self._api_prefix}/jobs/{self._user_id}",
+        res = requests.put(f"{self.service}/jobs/{self._user_id}",
                            headers={"Authorization": f"Bearer {self._token['access_token']}"},
                            json=cfg)
 
@@ -98,7 +99,7 @@ class JobApi:
 
         return res.json()
 
-    def delete(self, job_id: str) -> Union[AnyDict, Error]:
+    def delete(self, job_id: str) -> AnyDict:
         """
 
         :param job_id:
@@ -111,17 +112,18 @@ class JobApi:
 
         if res.status_code == 404:
             return {'message': 'Job not found'}
+
         res.raise_for_status()
 
         return res.json()
 
-    def list(self) -> JsonObject:
+    def list(self) -> AnyDict:
         """
 
         :return:
         """
 
-        res = requests.get(f"{self._api_url}:{self._api_port}/jobs/{self._user_id}", headers={
+        res = requests.get(f"{self.service}/jobs/{self._user_id}", headers={
             "Authorization": f"Bearer {self._token['access_token']}"
         })
 
@@ -138,7 +140,7 @@ class JobApi:
         :return:
         """
 
-        res = requests.get(f"{self._api_url}:{self._api_port}/jobs/{self._user_id}/{job_id}", headers={
+        res = requests.get(f"{self.service}/jobs/{self._user_id}/{job_id}", headers={
             "Authorization": f"Bearer {self._token['access_token']}"
         })
 
