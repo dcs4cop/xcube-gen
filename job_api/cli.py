@@ -19,12 +19,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import json
-import os
 import sys
 from pprint import pprint
 
 import click
-from xcube_gen.version import version
+from job_api.version import version
 
 
 @click.command(name="create")
@@ -35,7 +34,7 @@ def create(cube_conf: str):
     Start the service.
     """
 
-    from xcube_gen.jobapi import JobApi
+    from job_api.jobapi import JobApi
     api = JobApi()
     with open(cube_conf, 'r') as f:
         pprint(api.create(json.load(f)))
@@ -48,7 +47,7 @@ def lst():
     Stop the service.
     """
 
-    from xcube_gen.jobapi import JobApi
+    from job_api.jobapi import JobApi
     api = JobApi()
     pprint(api.list())
 
@@ -61,7 +60,7 @@ def status(job_id: str):
     Start the service.
     """
 
-    from xcube_gen.jobapi import JobApi
+    from job_api.jobapi import JobApi
     api = JobApi()
     pprint(api.status(job_id))
 
@@ -74,7 +73,7 @@ def delete(job_id: str):
     Start the service.
     """
 
-    from xcube_gen.jobapi import JobApi
+    from job_api.jobapi import JobApi
     api = JobApi()
     pprint(api.delete(job_id))
 

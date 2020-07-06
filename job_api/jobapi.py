@@ -24,7 +24,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
-from xcube_gen.typedefs import AnyDict, JsonObject
+from job_api.typedefs import AnyDict, JsonObject
 
 
 class JobApi:

@@ -23,7 +23,7 @@
 
 
 from setuptools import setup, find_packages
-from xcube_gen.version import version
+from job_api.version import version
 
 requirements = [
     # Use ./environment.yml for deps.
